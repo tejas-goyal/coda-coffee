@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coda Coffee | Farmer Direct</title>
+    <title>Coda Coffee | Farm2Cup</title>
 
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -54,6 +54,173 @@
         .hide-scroll {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+        .phone-frame {
+            width: 430px;
+            height: 100vh;
+            max-width: 100%;
+            max-height: 100vh;
+            margin: 0 auto;
+            border-radius: 28px;
+            overflow: hidden;
+        }
+        .phone-header {
+            width: 100%;
+            max-width: 430px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .origin-map {
+            position: relative;
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: radial-gradient(circle at 20% 30%, #f7e2df 0%, #f3efe7 40%, #e9f0ef 100%);
+            border: 1px solid #E5E7EB;
+        }
+
+        .origin-map .region {
+            position: absolute;
+            width: 160px;
+            height: 140px;
+            background: radial-gradient(circle at 30% 30%, #ff7a6f 0%, #ff4d3a 60%, #e7382a 100%);
+            opacity: 0.85;
+            border-radius: 60% 40% 55% 45% / 45% 55% 45% 55%;
+            left: 40px;
+            top: 40px;
+            filter: drop-shadow(0 10px 18px rgba(255, 107, 53, 0.35));
+        }
+
+        .origin-map .subarea {
+            position: absolute;
+            width: 80px;
+            height: 70px;
+            background: radial-gradient(circle at 35% 35%, #ffd2c6 0%, #ff9f8f 55%, #ff7a6f 100%);
+            border-radius: 55% 45% 60% 40% / 50% 50% 45% 55%;
+            left: 90px;
+            top: 80px;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+        }
+
+        .origin-map .pin {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            background: rgba(0, 0, 0, 0.75);
+            color: #fff;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .origin-map .pin .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #FF6B35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.25);
+        }
+
+        .timeline-card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            padding: 16px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+        }
+
+        .timeline-vertical {
+            display: grid;
+            gap: 12px;
+        }
+
+        .timeline-vertical .item {
+            display: flex;
+            gap: 12px;
+        }
+
+        .timeline-vertical .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #FF6B35;
+            margin-top: 6px;
+            box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.15);
+        }
+
+        .timeline-vertical .content {
+            flex: 1;
+        }
+
+        .timeline-horizontal {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .timeline-horizontal .step {
+            background: #F9FAFB;
+            border: 1px solid #E5E7EB;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .live-card {
+            background: #0B0B0B;
+            color: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            min-height: 170px;
+            border: 1px solid #111827;
+        }
+
+        .live-card .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #FF3B30;
+            color: #fff;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.08em;
+        }
+
+        .live-card .screen {
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        .live-card .meta {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            font-size: 12px;
+            color: #D1D5DB;
+        }
+
+        .feedback-card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #E5E7EB;
+            padding: 16px;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .feedback-item {
+            border-left: 3px solid #FF6B35;
+            padding-left: 12px;
+            margin-top: 12px;
+            color: #374151;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -144,6 +311,11 @@
                 <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
             </IconBase>
         );
+        const MessageCircle = (props) => (
+            <IconBase {...props}>
+                <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+            </IconBase>
+        );
 
         // --- Mock Data ---
         const FARMERS = [
@@ -152,7 +324,7 @@
                 name: "Amara Diallo",
                 location: "Yirgacheffe, Ethiopia",
                 origin: "Ethiopia",
-                image: "https://images.unsplash.com/photo-1595259716353-c5f808f33555?auto=format&fit=crop&q=80&w=800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/6/6c/Female_coffee_farmer_in_Ethiopia_%285762538117%29.jpg",
                 story: "Amara has been cultivating heirloom coffee varieties for over 20 years. Her farm supports a community of 40 families.",
                 milestones: [
                     { amount: 100, label: "New Drying Bed", achieved: true },
@@ -171,7 +343,7 @@
                 name: "Mateo Rivera",
                 location: "Huila, Colombia",
                 origin: "Colombia",
-                image: "https://images.unsplash.com/photo-1534726588265-27f999928507?auto=format&fit=crop&q=80&w=800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/1/1f/Coffee_Farmer.jpg",
                 story: "Mateo focuses on sustainable, shade-grown coffee that protects local bird species.",
                 milestones: [
                     { amount: 100, label: "Tools Upgrade", achieved: true },
@@ -189,7 +361,7 @@
                 name: "Elena Vasquez",
                 location: "Antigua, Guatemala",
                 origin: "Guatemala",
-                image: "https://images.unsplash.com/photo-1549495769-cf634458f297?auto=format&fit=crop&q=80&w=800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/9/99/Guatemala_2011_228_-_San_Mart%C3%ADn_Jilotepeque_Coffee_Harvest.jpg",
                 story: "Elena leads a cooperative of women farmers dedicated to organic farming practices.",
                 milestones: [
                     { amount: 150, label: "Organic Certification", achieved: true },
@@ -206,7 +378,7 @@
                 name: "David Kimani",
                 location: "Nyeri, Kenya",
                 origin: "Kenya",
-                image: "https://images.unsplash.com/photo-1506085452766-c330853bea50?auto=format&fit=crop&q=80&w=800",
+                image: "https://upload.wikimedia.org/wikipedia/commons/8/84/Coffee_farmer_in_Kenya.jpg",
                 story: "David uses innovative processing methods to enhance the natural fruitiness of Kenyan coffee.",
                 milestones: [
                     { amount: 200, label: "New Pulping Machine", achieved: false }
@@ -228,21 +400,27 @@
 
         // --- Components ---
 
-        const Hero = () => (
-            <div className="relative h-64 bg-coda-black overflow-hidden transform transition-all duration-700">
+        const Hero = ({ onScan }) => (
+            <div className="relative h-52 bg-coda-black overflow-hidden transform transition-all duration-700">
                 <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=800" className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-coda-black via-transparent to-black/30 flex flex-col justify-end p-6">
                     <div className="animate-in slide-in-from-bottom-4 duration-700 fade-in">
                         <span className="bg-coda-orange text-white text-[10px] font-bold px-2 py-1 rounded mb-3 inline-block tracking-wider uppercase">Direct Trade 2.0</span>
-                        <h1 className="text-3xl font-bold text-white leading-tight mb-1">Know Who Grew<br />Your Morning Cup.</h1>
-                        <p className="text-gray-300 text-xs max-w-[250px]">Tip farmers directly with smart contracts.</p>
+                        <h1 className="text-2xl font-bold text-white leading-tight mb-1">Know Who Grew<br />Your Morning Cup.</h1>
+                        <p className="text-gray-300 text-xs max-w-[250px]">Support a tree directly and see verified impact.</p>
+                        <button
+                            onClick={onScan}
+                            className="mt-4 inline-flex items-center gap-2 bg-white text-black text-xs font-bold px-3 py-2 rounded-full shadow-lg"
+                        >
+                            Scan a Bag <ArrowRight size={14} />
+                        </button>
                     </div>
                 </div>
             </div>
         );
 
         const Header = ({ view, setView, cartCount }) => (
-            <header className="fixed top-0 w-full bg-coda-black text-white z-50 shadow-md">
+            <header className="fixed top-0 w-full bg-coda-black text-white z-50 shadow-md phone-header">
                 <div className="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
                     <div className="flex items-center gap-3 cursor-pointer" onClick={() => setView('shop')}>
                         {/* Logo Mark Approximation */}
@@ -251,8 +429,9 @@
                             <span className="text-[0.5rem] font-bold tracking-widest text-white uppercase">COFFEE CO.</span>
                         </div>
                     </div>
-                    <nav className="flex items-center space-x-6">
+                    <nav className="flex items-center gap-4">
                         <button onClick={() => setView('shop')} className={`text-sm font-medium transition-colors ${view === 'shop' ? 'text-coda-orange' : 'text-gray-400 hover:text-white'}`}>Shop</button>
+                        <button onClick={() => setView('community')} className={`text-sm font-medium transition-colors ${view === 'community' ? 'text-coda-orange' : 'text-gray-400 hover:text-white'}`}>Community</button>
                         <button onClick={() => setView('impact')} className={`text-sm font-medium transition-colors ${view === 'impact' ? 'text-coda-orange' : 'text-gray-400 hover:text-white'}`}>Impact</button>
                         <div className="relative cursor-pointer group" onClick={() => setView('cart')}>
                             <ShoppingBag size={20} className={`transition-colors ${view === 'cart' || view === 'checkout' ? 'text-coda-orange' : 'text-white group-hover:text-coda-orange'}`} />
@@ -307,10 +486,11 @@
         const FarmerModal = ({ farmer, onClose, onTip }) => {
             if (!farmer) return null;
             const progress = (farmer.totalTips / farmer.nextMilestone) * 100;
+            const [openTrace, setOpenTrace] = useState(false);
 
             return (
                 <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-300">
-                    <div className="bg-white w-full max-w-md rounded-2xl overflow-hidden max-h-[90vh] overflow-y-auto hide-scroll shadow-2xl relative">
+                    <div className="bg-white w-full max-w-md rounded-2xl overflow-hidden max-h-[82vh] overflow-y-auto hide-scroll shadow-2xl relative">
                         <div className="relative h-72">
                             <img src={farmer.image} alt={farmer.name} className="w-full h-full object-cover grayscale" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
@@ -330,25 +510,79 @@
                         </div>
 
                         <div className="p-6 space-y-6">
-                            {/* Video Placeholder */}
+                            {/* Traceability + Tree Life (expandable) */}
+                            <div className="border border-gray-100 rounded-xl overflow-hidden">
+                                <button
+                                    onClick={() => setOpenTrace(!openTrace)}
+                                    className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 text-sm font-bold text-gray-800"
+                                >
+                                    Tree Map & Traceability
+                                    <ChevronRight className={`transition-transform ${openTrace ? 'rotate-90' : ''}`} size={18} />
+                                </button>
+                                {openTrace && (
+                                    <div className="p-4 space-y-4 bg-white">
+                                        <div className="relative h-40 rounded-xl overflow-hidden border border-gray-200">
+                                            <img
+                                                src="https://upload.wikimedia.org/wikipedia/commons/1/13/Relief_map_of_Guatemala.jpg"
+                                                className="absolute inset-0 w-full h-full object-cover"
+                                                alt="Guatemala relief map"
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                            <div className="absolute left-4 top-3 bg-black/80 text-white text-[10px] px-2 py-1 rounded-full">Farmer Region</div>
+                                            <div className="absolute bg-black/80 text-white text-[10px] px-2 py-1 rounded-full" style={{ left: '108px', top: '92px' }}>Tree #14</div>
+                                            <div className="absolute w-20 h-20 rounded-full bg-red-500/35 ring-4 ring-red-500/30" style={{ left: '58px', top: '58px' }}></div>
+                                            <div className="absolute w-3.5 h-3.5 rounded-full bg-orange-400 ring-4 ring-orange-400/30" style={{ left: '122px', top: '108px' }}></div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <p className="text-xs font-bold uppercase tracking-wider text-gray-400">Supply Chain Timeline</p>
+                                            <div className="space-y-3">
+                                                {[
+                                                    { t: "Harvested", d: "Oct 12, 2025 • Hand-picked cherries" },
+                                                    { t: "Processed", d: "Oct 20, 2025 • Washed & dried" },
+                                                    { t: "Shipped", d: "Nov 02, 2025 • Ocean freight" },
+                                                    { t: "Roasted", d: "Nov 18, 2025 • Small batch" },
+                                                ].map((item, idx) => (
+                                                    <div key={idx} className="flex gap-3">
+                                                        <div className="flex flex-col items-center">
+                                                            <span className="w-2.5 h-2.5 rounded-full bg-coda-orange shadow-[0_0_0_4px_rgba(255,107,53,0.18)] mt-1"></span>
+                                                            {idx < 3 && <span className="w-px h-full bg-gray-200 mt-1"></span>}
+                                                        </div>
+                                                        <div>
+                                                            <p className="text-sm font-semibold text-gray-900">{item.t}</p>
+                                                            <p className="text-xs text-gray-500">{item.d}</p>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Live Feed */}
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between">
-                                    <h3 className="font-bold text-gray-900">Farmer Story</h3>
-                                    <span className="text-xs font-medium text-coda-orange px-2 py-0.5 bg-orange-50 rounded-full">New Update</span>
+                                    <h3 className="font-bold text-gray-900">Tree Live</h3>
+                                    <span className="text-xs font-medium text-coda-orange px-2 py-0.5 bg-orange-50 rounded-full">Live</span>
                                 </div>
-                                <div className="bg-gray-100 rounded-xl h-40 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors relative group overflow-hidden">
-                                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
-                                    <div className="bg-white p-3 rounded-full shadow-lg z-10">
-                                        <Play size={24} className="text-coda-orange ml-1" fill="#FF6B35" />
-                                    </div>
-                                    <span className="text-sm font-medium text-gray-600 mt-2 z-10">Watch {farmer.name.split(' ')[0]}'s Message</span>
+                                <div className="bg-black rounded-xl h-36 relative overflow-hidden shadow-lg">
+                                    <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-full tracking-widest">LIVE</div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                                    <button className="absolute inset-0 flex items-center justify-center">
+                                        <span className="bg-white/90 backdrop-blur text-black p-3 rounded-full shadow-xl">
+                                            <Play size={22} className="text-coda-orange ml-0.5" fill="#FF6B35" />
+                                        </span>
+                                    </button>
+                                    <div className="absolute bottom-3 left-3 text-xs text-gray-200">Field Cam • {farmer.location} • 24 viewers</div>
                                 </div>
                             </div>
 
                             {/* Impact Stats */}
                             <div className="bg-orange-50 rounded-xl p-5 border border-orange-100">
                                 <div className="flex justify-between items-end mb-2">
-                                    <span className="text-sm text-gray-600 font-medium">Total Tips Received</span>
+                                    <span className="text-sm text-gray-600 font-medium">Total Tree Tips</span>
                                     <span className="text-2xl font-bold text-coda-orange">${farmer.totalTips}</span>
                                 </div>
                                 <div className="w-full bg-orange-200 h-2 rounded-full overflow-hidden mb-2">
@@ -356,23 +590,28 @@
                                 </div>
                                 <div className="flex justify-between text-xs">
                                     <span className="text-orange-800 font-medium">Next Milestone: ${farmer.nextMilestone}</span>
-                                    <span className="text-gray-500">Unlocks personal video</span>
+                                    <span className="text-gray-500">Unlocks new grove update</span>
                                 </div>
                             </div>
 
-                            {/* Recent Updates */}
+                            {/* Tree Timeline */}
                             <div>
-                                <h3 className="font-bold text-gray-900 mb-3">Harvest Updates</h3>
-                                <div className="space-y-4">
-                                    {farmer.updates.map((update, i) => (
+                                <h3 className="font-bold text-gray-900 mb-3">Tree Timeline</h3>
+                                <div className="space-y-4 max-h-32 overflow-y-auto hide-scroll pr-1">
+                                        {[
+                                            { date: "Mar 2024", text: "A seed was tucked into red soil, and a promise began." },
+                                            { date: "Jul 2024", text: "First leaves unfurled; the grove learned the light." },
+                                            { date: "Feb 2025", text: "The canopy thickened, held by patient hands." },
+                                            { date: "Oct 2025", text: "First berries set — the branch held its first promise." },
+                                        ].map((item, i) => (
                                         <div key={i} className="flex gap-3">
                                             <div className="flex flex-col items-center">
                                                 <div className="w-2 h-2 rounded-full bg-coda-orange mt-1.5"></div>
-                                                {i !== farmer.updates.length - 1 && <div className="w-px h-full bg-gray-200 my-1"></div>}
+                                                {i !== 3 && <div className="w-px h-full bg-gray-200 my-1"></div>}
                                             </div>
                                             <div>
-                                                <p className="text-xs text-gray-400 font-medium">{update.date}</p>
-                                                <p className="text-sm text-gray-700 mt-0.5">{update.text}</p>
+                                                <p className="text-xs text-gray-400 font-medium">{item.date}</p>
+                                                <p className="text-sm text-gray-700 mt-0.5">{item.text}</p>
                                             </div>
                                         </div>
                                     ))}
@@ -380,7 +619,7 @@
                             </div>
 
                             <button onClick={() => onTip(farmer)} className="w-full bg-coda-orange text-white py-3.5 rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-orange-200">
-                                Send a Tip to {farmer.name.split(' ')[0]}
+                                Support a Tree on {farmer.name.split(' ')[0]}'s Farm
                             </button>
                         </div>
                     </div>
@@ -442,12 +681,12 @@
                                                 <span className="hidden group-hover:block">90%</span>
                                             </div>
                                             <div className="bg-coda-orange w-[10%] flex items-center justify-center text-white text-xs font-bold relative group animate-pulse">
-                                                <span className="group-hover:hidden">Farmer</span>
+                                                <span className="group-hover:hidden">Tree Fund</span>
                                                 <span className="hidden group-hover:block">10%</span>
                                             </div>
                                         </div>
                                         <p className="text-xs text-center text-gray-500">
-                                            Smart contract automatically routes 10% directly to <span className="font-bold text-gray-800">{primaryFarmer.name}'s</span> wallet.
+                                            Smart contract automatically routes 10% directly to the tree care fund for <span className="font-bold text-gray-800">{primaryFarmer.name}'s</span> farm.
                                         </p>
                                     </div>
                                 </div>
@@ -457,8 +696,8 @@
                                     <div className="flex items-center gap-3 mb-3">
                                         <img src={primaryFarmer.image} className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" />
                                         <div>
-                                            <h3 className="font-bold text-gray-900 text-sm">Add a tip for {primaryFarmer.name.split(' ')[0]}?</h3>
-                                            <p className="text-xs text-gray-500">100% goes directly to them.</p>
+                                            <h3 className="font-bold text-gray-900 text-sm">Add a tip to support a tree?</h3>
+                                            <p className="text-xs text-gray-500">100% goes to the grove care fund.</p>
                                         </div>
                                     </div>
                                     <div className="grid grid-cols-4 gap-2">
@@ -531,13 +770,13 @@
                         <p className="text-3xl font-bold tracking-tight">$42.50</p>
                     </div>
                     <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
-                        <p className="text-gray-500 text-sm mb-1">Farmers Supported</p>
+                        <p className="text-gray-500 text-sm mb-1">Trees Supported</p>
                         <p className="text-3xl font-bold text-gray-900">3</p>
                     </div>
                 </div>
 
                 {/* Farmers List */}
-                <h3 className="font-bold text-gray-900 mb-4">Your Farmers</h3>
+                <h3 className="font-bold text-gray-900 mb-4">Your Trees</h3>
                 <div className="space-y-4 mb-8">
                     {FARMERS.slice(0, 3).map((farmer, i) => (
                         <div key={i} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
@@ -545,7 +784,7 @@
                             <div className="flex-1">
                                 <h4 className="font-bold text-gray-900">{farmer.name}</h4>
                                 <div className="flex items-center text-xs text-gray-500 mt-0.5">
-                                    <MapPin size={10} className="mr-1" /> {farmer.origin}
+                                    <MapPin size={10} className="mr-1" /> {farmer.origin} • Tree #14
                                 </div>
                             </div>
                             <div className="flex flex-col items-end">
@@ -640,7 +879,7 @@
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <div>
-                                            <p className="text-sm font-bold text-coda-orange">Farmer Wallet</p>
+                                            <p className="text-sm font-bold text-coda-orange">Tree Care Fund</p>
                                             <p className="text-xs text-gray-500 font-mono">0x8b...f34a</p>
                                         </div>
                                         <span className="font-mono font-bold text-coda-orange">10.0%</span>
@@ -651,7 +890,7 @@
 
                         <div className="bg-gray-50 p-4 rounded-lg text-xs text-gray-500 leading-relaxed">
                             <Info size={14} className="inline mr-1 mb-0.5" />
-                            This transaction is immutable and publicly verifiable. The tip amount was routed directly to the farmer's wallet address via smart contract logic.
+                            This transaction is immutable and publicly verifiable. The tip amount was routed directly to the tree care fund via smart contract logic.
                         </div>
 
                     </div>
@@ -662,9 +901,97 @@
             </div>
         );
 
+        const CommunityScreen = () => {
+            const [openComments, setOpenComments] = useState(false);
+            return (
+            <div className="pt-20 px-4 pb-20 max-w-md mx-auto space-y-6">
+                <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-bold">Community Updates</h2>
+                    <span className="text-xs font-bold text-coda-orange bg-orange-50 px-3 py-1 rounded-full">Live</span>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                    <div className="flex items-center gap-3">
+                        <img src={FARMERS[0].image} className="w-10 h-10 rounded-full object-cover" />
+                        <div className="flex-1">
+                            <p className="text-sm font-semibold text-gray-900">Share an Update</p>
+                            <p className="text-xs text-gray-500">Post your thoughts or reactions</p>
+                        </div>
+                    </div>
+                    <div className="mt-3 bg-gray-50 border border-gray-200 rounded-xl p-3 text-xs text-gray-500">
+                        “I just scanned my bag and saw Tree #14 — this is amazing.”
+                    </div>
+                    <div className="mt-3 flex items-center justify-between">
+                        <div className="flex items-center gap-3 text-xs text-gray-500">
+                            <button className="px-2 py-1 rounded-full bg-gray-100">Photo</button>
+                            <button className="px-2 py-1 rounded-full bg-gray-100">Tag Tree</button>
+                        </div>
+                        <button className="px-4 py-2 bg-coda-orange text-white text-xs font-bold rounded-full">Post</button>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                    <div className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-4">Latest Stories</div>
+                    <div className="space-y-4">
+                        <div className="flex gap-3">
+                            <img src={FARMERS[2].image} className="w-10 h-10 rounded-full object-cover" />
+                            <div>
+                                <p className="text-sm font-semibold text-gray-900">Elena’s cooperative reached its water goal</p>
+                                <p className="text-xs text-gray-500">“Clean filtration is now active for 40 families.”</p>
+                                <p className="text-[10px] text-gray-400 mt-1">2 hours ago</p>
+                                <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
+                                    <button className="flex items-center gap-1"><Heart size={14} className="text-coda-orange" /> 128</button>
+                                    <button onClick={() => setOpenComments(!openComments)} className="flex items-center gap-1"><MessageCircle size={14} /> 14</button>
+                                    <button className="flex items-center gap-1"><Share2 size={14} /> Share</button>
+                                </div>
+                                {openComments && (
+                                    <div className="mt-3 space-y-2">
+                                        <div className="flex gap-2">
+                                            <img src={FARMERS[3].image} className="w-7 h-7 rounded-full object-cover" />
+                                            <div className="bg-gray-50 border border-gray-200 rounded-xl p-2 text-xs text-gray-600">
+                                                “Seeing the map makes it real. Love the transparency.”
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <img src={FARMERS[0].image} className="w-7 h-7 rounded-full object-cover" />
+                                            <div className="bg-gray-50 border border-gray-200 rounded-xl p-2 text-xs text-gray-600">
+                                                “Tree Live is my favorite part. Feels personal.”
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-2 pt-1">
+                                            <input
+                                                className="flex-1 bg-gray-50 border border-gray-200 rounded-full px-3 py-2 text-xs focus:outline-none"
+                                                placeholder="Write a comment…"
+                                            />
+                                            <button className="px-3 py-2 bg-gray-900 text-white text-xs font-bold rounded-full">Send</button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="flex gap-3">
+                            <img src={FARMERS[1].image} className="w-10 h-10 rounded-full object-cover" />
+                            <div>
+                                <p className="text-sm font-semibold text-gray-900">Tree #14 hit its growth milestone</p>
+                                <p className="text-xs text-gray-500">“New shade canopy installed to protect seedlings.”</p>
+                                <p className="text-[10px] text-gray-400 mt-1">Yesterday</p>
+                                <div className="mt-2 flex items-center gap-4 text-xs text-gray-500">
+                                    <button className="flex items-center gap-1"><Heart size={14} className="text-coda-orange" /> 86</button>
+                                    <button className="flex items-center gap-1"><MessageCircle size={14} /> 9</button>
+                                    <button className="flex items-center gap-1"><Share2 size={14} /> Share</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            );
+        };
+
 
         const App = () => {
-            const [view, setView] = useState('shop'); // shop, cart, impact, verify
+            const [view, setView] = useState('shop'); // shop, community, cart, impact, verify
             const [selectedFarmer, setSelectedFarmer] = useState(null);
             const [cart, setCart] = useState([]);
             const [showSuccess, setShowSuccess] = useState(false);
@@ -683,7 +1010,7 @@
                 // Let's just create a dummy product for donation
                 const donationItem = {
                     id: 999,
-                    name: `Direct Tip: ${farmer.name}`,
+                    name: `Tree Tip: ${farmer.name}`,
                     price: 0.00,
                     farmerId: farmer.id,
                     image: farmer.image
@@ -703,29 +1030,35 @@
             };
 
             return (
-                <div className="min-h-screen bg-gray-50 relative max-w-md mx-auto shadow-2xl overflow-hidden bg-white">
+                <div className="min-h-screen bg-gray-50 relative max-w-md mx-auto shadow-2xl overflow-hidden bg-white phone-frame flex flex-col">
                     <Header view={view} setView={setView} cartCount={cart.length} />
 
-                    <main className="pt-16 min-h-screen pb-20">
+                    <main className="pt-16 pb-20 flex-1 overflow-y-auto hide-scroll">
                         {view === 'shop' && (
                             <>
-                                <Hero />
-                                <div className="px-4 grid grid-cols-1 gap-6">
+                                <Hero onScan={() => setSelectedFarmer(FARMERS[0])} />
+                                <div className="px-4 grid grid-cols-1 gap-4">
                                     <div className="flex items-center justify-between px-1">
                                         <h2 className="text-xl font-bold text-gray-900">Fresh Drops</h2>
                                         <span className="text-xs font-bold text-coda-orange cursor-pointer">View All</span>
                                     </div>
-                                    {PRODUCTS.map(p => (
-                                        <ProductCard
-                                            key={p.id}
-                                            product={p}
-                                            farmer={FARMERS.find(f => f.id === p.farmerId)}
-                                            onSelectFarmer={setSelectedFarmer}
-                                            onAddToCart={addToCart}
-                                        />
-                                    ))}
+                                    <div className="space-y-4 max-h-[calc(100vh-440px)] overflow-y-auto hide-scroll pr-1 pb-2">
+                                        {PRODUCTS.map(p => (
+                                            <ProductCard
+                                                key={p.id}
+                                                product={p}
+                                                farmer={FARMERS.find(f => f.id === p.farmerId)}
+                                                onSelectFarmer={setSelectedFarmer}
+                                                onAddToCart={addToCart}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             </>
+                        )}
+
+                        {view === 'community' && (
+                            <CommunityScreen />
                         )}
 
                         {view === 'cart' && (
@@ -757,7 +1090,7 @@
                                 <CheckCircle2 size={48} className="text-coda-orange" />
                             </div>
                             <h2 className="text-3xl font-bold mb-2">Thank You!</h2>
-                            <p className="text-orange-100 font-medium text-lg">Tip Sent to Farmer Wallet</p>
+                            <p className="text-orange-100 font-medium text-lg">Tip Sent to Tree Care Fund</p>
                             <div className="mt-8 flex flex-col items-center space-y-2 opacity-80">
                                 <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></div>
                                 <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-100"></div>
