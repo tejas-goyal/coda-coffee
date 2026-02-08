@@ -1,7 +1,7 @@
 # coda-coffee
 wireframe for coda coffee app
 
-# Prototype Usage Notes (Concise)
+# Prototype Usage Notes
 
 ## 1. Scan a Bag (Home)
 **How to trigger:**
