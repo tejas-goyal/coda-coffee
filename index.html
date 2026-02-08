@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coda Coffee | Farmer Direct</title>
+
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        coda: {
+                            orange: '#FF6B35',
+                            black: '#000000',
+                            gray: '#F3F4F6',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F9FAFB;
+        }
+
+        .hide-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .hide-scroll {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // --- Inline Icons to avoid CDN/Dependency issues ---
+        const IconBase = ({ children, size = 24, className = "", ...props }) => (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width={size}
+                height={size}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={`lucide ${className}`}
+                {...props}
+            >
+                {children}
+            </svg>
+        );
+
+        const Coffee = (props) => (
+            <IconBase {...props}>
+                <path d="M10 2v2" /><path d="M14 2v2" /><path d="M17 8v1a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z" /><path d="M6 2v2" /><line x1="6" y1="2" x2="6" y2="4" /><line x1="10" y1="2" x2="10" y2="4" /><line x1="14" y1="2" x2="14" y2="4" />
+                <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+            </IconBase>
+        );
+        const ShoppingBag = (props) => (
+            <IconBase {...props}>
+                <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" />
+            </IconBase>
+        );
+        const Heart = (props) => (
+            <IconBase {...props}>
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </IconBase>
+        );
+        const ShieldCheck = (props) => (
+            <IconBase {...props}>
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" /><path d="m9 12 2 2 4-4" />
+            </IconBase>
+        );
+        const Play = (props) => (
+            <IconBase {...props}>
+                <polygon points="5 3 19 12 5 21 5 3" />
+            </IconBase>
+        );
+        const MapPin = (props) => (
+            <IconBase {...props}>
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" />
+            </IconBase>
+        );
+        const ChevronRight = (props) => (
+            <IconBase {...props}>
+                <path d="m9 18 6-6-6-6" />
+            </IconBase>
+        );
+        const ArrowRight = (props) => (
+            <IconBase {...props}>
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+            </IconBase>
+        );
+        const CheckCircle2 = (props) => (
+            <IconBase {...props}>
+                <circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" />
+            </IconBase>
+        );
+        const Wallet = (props) => (
+            <IconBase {...props}>
+                <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" /><path d="M3 5v14a2 2 0 0 0 2 2h16v-5" /><path d="M18 12a2 2 0 0 0 0 4h4v-4Z" />
+            </IconBase>
+        );
+        const Share2 = (props) => (
+            <IconBase {...props}>
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" x2="15.42" y1="13.51" y2="17.49" /><line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
+            </IconBase>
+        );
+        const Info = (props) => (
+            <IconBase {...props}>
+                <circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" />
+            </IconBase>
+        );
+
+        // --- Mock Data ---
+        const FARMERS = [
+            {
+                id: 1,
+                name: "Amara Diallo",
+                location: "Yirgacheffe, Ethiopia",
+                origin: "Ethiopia",
+                image: "https://images.unsplash.com/photo-1595259716353-c5f808f33555?auto=format&fit=crop&q=80&w=800",
+                story: "Amara has been cultivating heirloom coffee varieties for over 20 years. Her farm supports a community of 40 families.",
+                milestones: [
+                    { amount: 100, label: "New Drying Bed", achieved: true },
+                    { amount: 500, label: "Personal Thank You Video", achieved: false },
+                    { amount: 1000, label: "Community Water Well", achieved: false }
+                ],
+                totalTips: 340,
+                nextMilestone: 500,
+                updates: [
+                    { date: "Oct 12, 2025", text: "Harvest begun! The cherries are looking perfectly ripe." },
+                    { date: "Sep 28, 2025", text: "New drying beds installed thanks to your tips." }
+                ]
+            },
+            {
+                id: 2,
+                name: "Mateo Rivera",
+                location: "Huila, Colombia",
+                origin: "Colombia",
+                image: "https://images.unsplash.com/photo-1534726588265-27f999928507?auto=format&fit=crop&q=80&w=800",
+                story: "Mateo focuses on sustainable, shade-grown coffee that protects local bird species.",
+                milestones: [
+                    { amount: 100, label: "Tools Upgrade", achieved: true },
+                    { amount: 500, label: "Personal Tour Video", achieved: true },
+                    { amount: 1200, label: "Solar Panels", achieved: false }
+                ],
+                totalTips: 890,
+                nextMilestone: 1200,
+                updates: [
+                    { date: "Nov 05, 2025", text: "Heavy rains this week, but the crop is safe." }
+                ]
+            },
+            {
+                id: 3,
+                name: "Elena Vasquez",
+                location: "Antigua, Guatemala",
+                origin: "Guatemala",
+                image: "https://images.unsplash.com/photo-1549495769-cf634458f297?auto=format&fit=crop&q=80&w=800",
+                story: "Elena leads a cooperative of women farmers dedicated to organic farming practices.",
+                milestones: [
+                    { amount: 150, label: "Organic Certification", achieved: true },
+                    { amount: 600, label: "Training Workshop", achieved: false }
+                ],
+                totalTips: 415,
+                nextMilestone: 600,
+                updates: [
+                    { date: "Oct 30, 2025", text: "Preparing for the main harvest season." }
+                ]
+            },
+            {
+                id: 4,
+                name: "David Kimani",
+                location: "Nyeri, Kenya",
+                origin: "Kenya",
+                image: "https://images.unsplash.com/photo-1506085452766-c330853bea50?auto=format&fit=crop&q=80&w=800",
+                story: "David uses innovative processing methods to enhance the natural fruitiness of Kenyan coffee.",
+                milestones: [
+                    { amount: 200, label: "New Pulping Machine", achieved: false }
+                ],
+                totalTips: 120,
+                nextMilestone: 200,
+                updates: [
+                    { date: "Nov 01, 2025", text: "Flowering season has started beautifully." }
+                ]
+            }
+        ];
+
+        const PRODUCTS = [
+            { id: 101, name: "Ethiopian Yirgacheffe", price: 18.00, farmerId: 1, image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=600" },
+            { id: 102, name: "Colombian Supremo", price: 16.50, farmerId: 2, image: "https://images.unsplash.com/photo-1559525839-b184a4d698c7?auto=format&fit=crop&q=80&w=600" },
+            { id: 103, name: "Guatemala Antigua", price: 17.25, farmerId: 3, image: "https://images.unsplash.com/photo-1610632380989-680fe40816c6?auto=format&fit=crop&q=80&w=600" },
+            { id: 104, name: "Kenya AA", price: 19.50, farmerId: 4, image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&q=80&w=600" },
+        ];
+
+        // --- Components ---
+
+        const Hero = () => (
+            <div className="relative h-64 bg-coda-black overflow-hidden transform transition-all duration-700">
+                <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=800" className="absolute inset-0 w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-coda-black via-transparent to-black/30 flex flex-col justify-end p-6">
+                    <div className="animate-in slide-in-from-bottom-4 duration-700 fade-in">
+                        <span className="bg-coda-orange text-white text-[10px] font-bold px-2 py-1 rounded mb-3 inline-block tracking-wider uppercase">Direct Trade 2.0</span>
+                        <h1 className="text-3xl font-bold text-white leading-tight mb-1">Know Who Grew<br />Your Morning Cup.</h1>
+                        <p className="text-gray-300 text-xs max-w-[250px]">Tip farmers directly with smart contracts.</p>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const Header = ({ view, setView, cartCount }) => (
+            <header className="fixed top-0 w-full bg-coda-black text-white z-50 shadow-md">
+                <div className="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
+                    <div className="flex items-center gap-3 cursor-pointer" onClick={() => setView('shop')}>
+                        {/* Logo Mark Approximation */}
+                        <div className="flex flex-col items-center justify-center leading-none">
+                            <h1 className="text-3xl font-bold tracking-tighter text-white lowercase" style={{ fontFamily: 'Inter, sans-serif' }}>coda</h1>
+                            <span className="text-[0.5rem] font-bold tracking-widest text-white uppercase">COFFEE CO.</span>
+                        </div>
+                    </div>
+                    <nav className="flex items-center space-x-6">
+                        <button onClick={() => setView('shop')} className={`text-sm font-medium transition-colors ${view === 'shop' ? 'text-coda-orange' : 'text-gray-400 hover:text-white'}`}>Shop</button>
+                        <button onClick={() => setView('impact')} className={`text-sm font-medium transition-colors ${view === 'impact' ? 'text-coda-orange' : 'text-gray-400 hover:text-white'}`}>Impact</button>
+                        <div className="relative cursor-pointer group" onClick={() => setView('cart')}>
+                            <ShoppingBag size={20} className={`transition-colors ${view === 'cart' || view === 'checkout' ? 'text-coda-orange' : 'text-white group-hover:text-coda-orange'}`} />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-2 -right-2 bg-coda-orange text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </div>
+                    </nav>
+                </div>
+            </header>
+        );
+
+        const ProductCard = ({ product, farmer, onSelectFarmer, onAddToCart }) => (
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                <div className="h-40 bg-gray-200 relative overflow-hidden">
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" />
+                    <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full flex items-center shadow-sm cursor-pointer hover:bg-coda-orange transition-colors" onClick={(e) => { e.stopPropagation(); onSelectFarmer(farmer); }}>
+                        <img src={farmer.image} alt={farmer.name} className="w-5 h-5 rounded-full mr-1.5 border border-white/50" />
+                        <span className="font-medium">Supports {farmer.name.split(' ')[0]}</span>
+                    </div>
+                </div>
+                <div className="p-4">
+                    <div className="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 className="font-bold text-gray-900 leading-tight group-hover:text-coda-orange transition-colors">{product.name}</h3>
+                            <p className="text-xs text-gray-500">{product.origin}</p>
+                        </div>
+                        <span className="font-bold text-gray-900">${product.price.toFixed(2)}</span>
+                    </div>
+                    <div className="flex space-x-2 mt-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                        <button
+                            onClick={() => onAddToCart(product)}
+                            className="flex-1 bg-black text-white py-2 rounded-lg text-xs font-bold uppercase tracking-wide hover:bg-gray-800 transition-colors"
+                        >
+                            Add to Cart
+                        </button>
+                        <button
+                            onClick={() => onSelectFarmer(farmer)}
+                            className="bg-orange-50 text-coda-orange border border-orange-100 px-3 py-2 rounded-lg hover:bg-orange-100 transition-colors"
+                        >
+                            <Heart size={18} />
+                        </button>
+                    </div>
+                    {/* Placeholder to prevent layout shift when buttons appear */}
+                    <div className="h-0 group-hover:h-0 transition-all duration-300"></div>
+                </div>
+            </div>
+        );
+
+        const FarmerModal = ({ farmer, onClose, onTip }) => {
+            if (!farmer) return null;
+            const progress = (farmer.totalTips / farmer.nextMilestone) * 100;
+
+            return (
+                <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-300">
+                    <div className="bg-white w-full max-w-md rounded-2xl overflow-hidden max-h-[90vh] overflow-y-auto hide-scroll shadow-2xl relative">
+                        <div className="relative h-72">
+                            <img src={farmer.image} alt={farmer.name} className="w-full h-full object-cover grayscale" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+
+                            <button onClick={onClose} className="absolute top-4 right-4 bg-white/10 text-white p-2 rounded-full backdrop-blur-md hover:bg-white/20 transition-colors border border-white/10 z-10">
+                                <ArrowRight className="rotate-180" size={20} />
+                            </button>
+
+                            <div className="absolute bottom-0 left-0 right-0 p-6">
+                                <span className="text-coda-orange font-bold tracking-widest text-[10px] uppercase bg-black/50 backdrop-blur-md px-2 py-1 rounded mb-2 inline-block border border-coda-orange/30">Partner Farmer</span>
+                                <h2 className="text-3xl font-bold text-white mb-1 leading-none">{farmer.name}</h2>
+                                <div className="flex items-center text-gray-300 text-sm">
+                                    <MapPin size={14} className="mr-1 text-coda-orange" />
+                                    {farmer.location}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="p-6 space-y-6">
+                            {/* Video Placeholder */}
+                            <div className="space-y-2">
+                                <div className="flex items-center justify-between">
+                                    <h3 className="font-bold text-gray-900">Farmer Story</h3>
+                                    <span className="text-xs font-medium text-coda-orange px-2 py-0.5 bg-orange-50 rounded-full">New Update</span>
+                                </div>
+                                <div className="bg-gray-100 rounded-xl h-40 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 transition-colors relative group overflow-hidden">
+                                    <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors"></div>
+                                    <div className="bg-white p-3 rounded-full shadow-lg z-10">
+                                        <Play size={24} className="text-coda-orange ml-1" fill="#FF6B35" />
+                                    </div>
+                                    <span className="text-sm font-medium text-gray-600 mt-2 z-10">Watch {farmer.name.split(' ')[0]}'s Message</span>
+                                </div>
+                            </div>
+
+                            {/* Impact Stats */}
+                            <div className="bg-orange-50 rounded-xl p-5 border border-orange-100">
+                                <div className="flex justify-between items-end mb-2">
+                                    <span className="text-sm text-gray-600 font-medium">Total Tips Received</span>
+                                    <span className="text-2xl font-bold text-coda-orange">${farmer.totalTips}</span>
+                                </div>
+                                <div className="w-full bg-orange-200 h-2 rounded-full overflow-hidden mb-2">
+                                    <div className="bg-coda-orange h-full rounded-full transition-all duration-1000" style={{ width: `${Math.min(progress, 100)}%` }}></div>
+                                </div>
+                                <div className="flex justify-between text-xs">
+                                    <span className="text-orange-800 font-medium">Next Milestone: ${farmer.nextMilestone}</span>
+                                    <span className="text-gray-500">Unlocks personal video</span>
+                                </div>
+                            </div>
+
+                            {/* Recent Updates */}
+                            <div>
+                                <h3 className="font-bold text-gray-900 mb-3">Harvest Updates</h3>
+                                <div className="space-y-4">
+                                    {farmer.updates.map((update, i) => (
+                                        <div key={i} className="flex gap-3">
+                                            <div className="flex flex-col items-center">
+                                                <div className="w-2 h-2 rounded-full bg-coda-orange mt-1.5"></div>
+                                                {i !== farmer.updates.length - 1 && <div className="w-px h-full bg-gray-200 my-1"></div>}
+                                            </div>
+                                            <div>
+                                                <p className="text-xs text-gray-400 font-medium">{update.date}</p>
+                                                <p className="text-sm text-gray-700 mt-0.5">{update.text}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <button onClick={() => onTip(farmer)} className="w-full bg-coda-orange text-white py-3.5 rounded-xl font-bold hover:bg-orange-600 transition-colors shadow-lg shadow-orange-200">
+                                Send a Tip to {farmer.name.split(' ')[0]}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const CheckoutScreen = ({ cart, onComplete, setView }) => {
+            const [tipAmount, setTipAmount] = useState(3);
+            const [isCustom, setIsCustom] = useState(false);
+
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const total = subtotal + tipAmount;
+
+            // Assume first product's farmer for the demo visualization
+            const primaryFarmer = cart.length > 0 ? FARMERS.find(f => f.id === cart[0].farmerId) : null;
+
+            return (
+                <div className="pt-20 pb-24 px-4 max-w-md mx-auto min-h-screen flex flex-col">
+                    <div className="flex-1">
+                        <h2 className="text-2xl font-bold mb-6">Review & Pay</h2>
+
+                        {/* Cart Items */}
+                        <div className="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-100">
+                            <h3 className="font-bold text-sm text-gray-500 uppercase mb-3">Order Summary</h3>
+                            {cart.length === 0 ? (
+                                <p className="text-gray-400 py-4 text-center">Your cart is empty</p>
+                            ) : (
+                                <div className="space-y-3">
+                                    {cart.map((item, i) => (
+                                        <div key={i} className="flex justify-between items-center text-sm">
+                                            <span className="text-gray-800 font-medium">{item.name}</span>
+                                            <span className="text-gray-600">${item.price.toFixed(2)}</span>
+                                        </div>
+                                    ))}
+                                    <div className="h-px bg-gray-100 my-2"></div>
+                                    <div className="flex justify-between items-center font-bold">
+                                        <span>Subtotal</span>
+                                        <span>${subtotal.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {cart.length > 0 && primaryFarmer && (
+                            <>
+                                {/* Payment Split Viz */}
+                                <div className="mb-6">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h3 className="font-bold text-sm text-gray-500 uppercase">Payment Destination</h3>
+                                        <span className="text-xs text-coda-orange bg-orange-50 px-2 py-0.5 rounded flex items-center">
+                                            <ShieldCheck size={12} className="mr-1" /> Smart Contract
+                                        </span>
+                                    </div>
+                                    <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                                        <div className="flex h-12 rounded-lg overflow-hidden mb-3">
+                                            <div className="bg-black flex-grow flex items-center justify-center text-white text-xs font-bold relative group">
+                                                <span className="group-hover:hidden">Coda Coffee</span>
+                                                <span className="hidden group-hover:block">90%</span>
+                                            </div>
+                                            <div className="bg-coda-orange w-[10%] flex items-center justify-center text-white text-xs font-bold relative group animate-pulse">
+                                                <span className="group-hover:hidden">Farmer</span>
+                                                <span className="hidden group-hover:block">10%</span>
+                                            </div>
+                                        </div>
+                                        <p className="text-xs text-center text-gray-500">
+                                            Smart contract automatically routes 10% directly to <span className="font-bold text-gray-800">{primaryFarmer.name}'s</span> wallet.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Micro-Tip */}
+                                <div className="mb-8">
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <img src={primaryFarmer.image} className="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" />
+                                        <div>
+                                            <h3 className="font-bold text-gray-900 text-sm">Add a tip for {primaryFarmer.name.split(' ')[0]}?</h3>
+                                            <p className="text-xs text-gray-500">100% goes directly to them.</p>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-4 gap-2">
+                                        {[1, 3, 5].map(amt => (
+                                            <button
+                                                key={amt}
+                                                onClick={() => { setTipAmount(amt); setIsCustom(false); }}
+                                                className={`py-2 rounded-lg font-bold text-sm transition-all border ${tipAmount === amt && !isCustom ? 'bg-coda-orange text-white border-coda-orange shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-coda-orange/50'}`}
+                                            >
+                                                +${amt}
+                                            </button>
+                                        ))}
+                                        <button
+                                            onClick={() => setIsCustom(true)}
+                                            className={`py-2 rounded-lg font-bold text-sm transition-all border ${isCustom ? 'bg-coda-orange text-white border-coda-orange shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-coda-orange/50'}`}
+                                        >
+                                            Custom
+                                        </button>
+                                    </div>
+                                    {isCustom && (
+                                        <div className="mt-2 relative">
+                                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium">$</span>
+                                            <input
+                                                type="number"
+                                                className="w-full pl-7 pr-3 py-2 border rounded-lg focus:outline-none focus:border-coda-orange"
+                                                placeholder="Enter amount"
+                                                onChange={(e) => setTipAmount(Number(e.target.value))}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            </>
+                        )}
+                    </div>
+
+                    {/* Bottom Action */}
+                    <div className="space-y-3 mt-auto">
+                        <div className="flex items-center justify-between p-3 bg-gray-100 rounded-lg border border-gray-200 cursor-not-allowed opacity-70">
+                            <div className="flex items-center gap-2">
+                                <Wallet size={18} className="text-gray-500" />
+                                <span className="text-sm font-medium text-gray-600">Connect Wallet</span>
+                            </div>
+                            <span className="text-xs text-gray-400">Stablecoin / Card</span>
+                        </div>
+                        <button
+                            onClick={onComplete}
+                            disabled={cart.length === 0}
+                            className={`w-full py-4 rounded-xl text-white font-bold text-lg shadow-xl flex items-center justify-center gap-2 ${cart.length === 0 ? 'bg-gray-400' : 'bg-black hover:bg-gray-800'}`}
+                        >
+                            <span>Pay ${total.toFixed(2)}</span>
+                            <ArrowRight size={20} />
+                        </button>
+                    </div>
+                </div>
+            )
+        }
+
+        const ImpactDashboard = ({ onViewVerify }) => (
+            <div className="pt-20 px-4 pb-20 max-w-md mx-auto">
+                <div className="flex items-center justify-between mb-8">
+                    <h2 className="text-2xl font-bold">Your Impact</h2>
+                    <div className="bg-orange-100 text-coda-orange px-3 py-1 rounded-full text-xs font-bold">Level 2 Contributor</div>
+                </div>
+
+                {/* Main Stats */}
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                    <div className="bg-black text-white p-5 rounded-2xl shadow-lg relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-10 bg-gray-800 rounded-full blur-2xl opacity-50 -mr-10 -mt-10"></div>
+                        <p className="text-gray-400 text-sm mb-1">Total Tipped</p>
+                        <p className="text-3xl font-bold tracking-tight">$42.50</p>
+                    </div>
+                    <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
+                        <p className="text-gray-500 text-sm mb-1">Farmers Supported</p>
+                        <p className="text-3xl font-bold text-gray-900">3</p>
+                    </div>
+                </div>
+
+                {/* Farmers List */}
+                <h3 className="font-bold text-gray-900 mb-4">Your Farmers</h3>
+                <div className="space-y-4 mb-8">
+                    {FARMERS.slice(0, 3).map((farmer, i) => (
+                        <div key={i} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
+                            <img src={farmer.image} className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm" />
+                            <div className="flex-1">
+                                <h4 className="font-bold text-gray-900">{farmer.name}</h4>
+                                <div className="flex items-center text-xs text-gray-500 mt-0.5">
+                                    <MapPin size={10} className="mr-1" /> {farmer.origin}
+                                </div>
+                            </div>
+                            <div className="flex flex-col items-end">
+                                <span className="font-bold text-coda-orange text-lg">$15</span>
+                                <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">3 txns</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Milestones */}
+                <h3 className="font-bold text-gray-900 mb-4">Unlockables</h3>
+                <div className="flex gap-4 overflow-x-auto hide-scroll pb-4 -mx-4 px-4">
+                    <div className="min-w-[140px] bg-orange-50 p-4 rounded-xl border border-orange-100 flex flex-col items-center text-center">
+                        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">
+                            <CheckCircle2 size={20} className="text-coda-orange" />
+                        </div>
+                        <span className="font-bold text-sm text-gray-900">First Tip</span>
+                        <span className="text-xs text-gray-500 mt-1">Unlocked</span>
+                    </div>
+                    <div className="min-w-[140px] bg-white p-4 rounded-xl border border-gray-100 flex flex-col items-center text-center">
+                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                            <Play size={20} className="text-gray-400" />
+                        </div>
+                        <span className="font-bold text-sm text-gray-400">Video Message</span>
+                        <div className="w-full bg-gray-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div className="bg-coda-orange h-full w-[60%]"></div>
+                        </div>
+                        <span className="text-[10px] text-gray-400 mt-1">60% to Unlock</span>
+                    </div>
+                </div>
+
+                {/* Blockchain Verify Link */}
+                <div className="mt-6 text-center">
+                    <button onClick={onViewVerify} className="text-xs text-gray-500 flex items-center justify-center gap-1 mx-auto hover:text-coda-orange transition-colors">
+                        <ShieldCheck size={14} /> Verify Impact on Blockchain
+                    </button>
+                </div>
+            </div>
+        );
+
+        const TransactionScreen = ({ onClose }) => (
+            <div className="fixed inset-0 bg-white z-[60] overflow-y-auto">
+                <div className="bg-black text-white p-6 pb-12 rounded-b-[3rem] shadow-2xl relative">
+                    <button onClick={onClose} className="absolute top-6 left-4 text-gray-400 hover:text-white">
+                        <ArrowRight className="rotate-180" size={24} />
+                    </button>
+                    <div className="flex flex-col items-center mt-4">
+                        <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
+                            <ShieldCheck size={32} className="text-green-400" />
+                        </div>
+                        <h2 className="text-2xl font-bold">Transaction Verified</h2>
+                        <p className="text-green-400 text-sm font-medium mt-1 box-border px-3 py-1 bg-green-900/30 rounded-full border border-green-500/20">Recorded on Public Ledger</p>
+                    </div>
+                </div>
+
+                <div className="max-w-md mx-auto px-6 -mt-8 relative z-10">
+                    <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 space-y-6">
+
+                        <div className="space-y-1">
+                            <p className="text-xs font-bold text-gray-400 uppercase tracking-wide">Transaction Hash</p>
+                            <p className="font-mono text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200 break-all select-all">
+                                0x7f48b9f7d6a45c3e98...3a2b1c9d8e7f6a5b4c
+                            </p>
+                        </div>
+
+                        <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-sm text-gray-500">Block Number</span>
+                            <span className="font-mono text-sm font-bold text-gray-800">#18,245,901</span>
+                        </div>
+
+                        <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                            <span className="text-sm text-gray-500">Timestamp</span>
+                            <span className="text-sm font-medium text-gray-800">Feb 07, 2026 19:12 UTC</span>
+                        </div>
+
+                        <div>
+                            <p className="text-xs font-bold text-gray-400 uppercase tracking-wide mb-3">Smart Contract Split</p>
+                            <div className="flex items-start gap-4 mb-4">
+                                <div className="flex flex-col items-center">
+                                    <div className="w-2 h-2 bg-gray-300 rounded-full"></div>
+                                    <div className="w-0.5 h-8 bg-gray-200"></div>
+                                    <div className="w-2 h-2 bg-coda-orange rounded-full"></div>
+                                </div>
+                                <div className="flex-1 space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <p className="text-sm font-bold text-gray-900">Merchant (Coda)</p>
+                                            <p className="text-xs text-gray-500 font-mono">0x4a...e219</p>
+                                        </div>
+                                        <span className="font-mono font-bold text-gray-900">90.0%</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <p className="text-sm font-bold text-coda-orange">Farmer Wallet</p>
+                                            <p className="text-xs text-gray-500 font-mono">0x8b...f34a</p>
+                                        </div>
+                                        <span className="font-mono font-bold text-coda-orange">10.0%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-gray-50 p-4 rounded-lg text-xs text-gray-500 leading-relaxed">
+                            <Info size={14} className="inline mr-1 mb-0.5" />
+                            This transaction is immutable and publicly verifiable. The tip amount was routed directly to the farmer's wallet address via smart contract logic.
+                        </div>
+
+                    </div>
+
+                    <button onClick={onClose} className="w-full mt-6 bg-gray-900 text-white py-3 rounded-lg font-bold">Close Verification</button>
+
+                </div>
+            </div>
+        );
+
+
+        const App = () => {
+            const [view, setView] = useState('shop'); // shop, cart, impact, verify
+            const [selectedFarmer, setSelectedFarmer] = useState(null);
+            const [cart, setCart] = useState([]);
+            const [showSuccess, setShowSuccess] = useState(false);
+            const [showTransaction, setShowTransaction] = useState(false);
+
+            const addToCart = (product) => {
+                setCart([...cart, product]);
+                // Simple animation trigger dummy
+            };
+
+            const handleFarmerTip = (farmer) => {
+                // If viewing farmer directly, maybe just add a direct tip flow?
+                // For this demo, let's assume tipping happens often with purchase or direct.
+                // We'll direct them to checkout with a "dummy" item if cart is empty, or just open checkout.
+                // To keep it simple: Add a small "Direct Tip" item to cart?
+                // Let's just create a dummy product for donation
+                const donationItem = {
+                    id: 999,
+                    name: `Direct Tip: ${farmer.name}`,
+                    price: 0.00,
+                    farmerId: farmer.id,
+                    image: farmer.image
+                };
+                setCart([...cart, donationItem]);
+                setView('cart');
+                setSelectedFarmer(null); // Close modal
+            };
+
+            const handleCheckout = () => {
+                setShowSuccess(true);
+                setTimeout(() => {
+                    setShowSuccess(false);
+                    setCart([]);
+                    setView('impact');
+                }, 2500);
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-50 relative max-w-md mx-auto shadow-2xl overflow-hidden bg-white">
+                    <Header view={view} setView={setView} cartCount={cart.length} />
+
+                    <main className="pt-16 min-h-screen pb-20">
+                        {view === 'shop' && (
+                            <>
+                                <Hero />
+                                <div className="px-4 grid grid-cols-1 gap-6">
+                                    <div className="flex items-center justify-between px-1">
+                                        <h2 className="text-xl font-bold text-gray-900">Fresh Drops</h2>
+                                        <span className="text-xs font-bold text-coda-orange cursor-pointer">View All</span>
+                                    </div>
+                                    {PRODUCTS.map(p => (
+                                        <ProductCard
+                                            key={p.id}
+                                            product={p}
+                                            farmer={FARMERS.find(f => f.id === p.farmerId)}
+                                            onSelectFarmer={setSelectedFarmer}
+                                            onAddToCart={addToCart}
+                                        />
+                                    ))}
+                                </div>
+                            </>
+                        )}
+
+                        {view === 'cart' && (
+                            <CheckoutScreen cart={cart} onComplete={handleCheckout} setView={setView} />
+                        )}
+
+                        {view === 'impact' && (
+                            <ImpactDashboard onViewVerify={() => setShowTransaction(true)} />
+                        )}
+                    </main>
+
+                    {/* Modals & Overlays */}
+                    {selectedFarmer && (
+                        <FarmerModal
+                            farmer={selectedFarmer}
+                            onClose={() => setSelectedFarmer(null)}
+                            onTip={handleFarmerTip}
+                        />
+                    )}
+
+                    {showTransaction && (
+                        <TransactionScreen onClose={() => setShowTransaction(false)} />
+                    )}
+
+                    {/* Success Overlay */}
+                    {showSuccess && (
+                        <div className="fixed inset-0 z-[70] bg-coda-orange flex flex-col items-center justify-center text-white animate-in zoom-in duration-300">
+                            <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center mb-6 shadow-xl">
+                                <CheckCircle2 size={48} className="text-coda-orange" />
+                            </div>
+                            <h2 className="text-3xl font-bold mb-2">Thank You!</h2>
+                            <p className="text-orange-100 font-medium text-lg">Tip Sent to Farmer Wallet</p>
+                            <div className="mt-8 flex flex-col items-center space-y-2 opacity-80">
+                                <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce"></div>
+                                <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-100"></div>
+                                <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-200"></div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
